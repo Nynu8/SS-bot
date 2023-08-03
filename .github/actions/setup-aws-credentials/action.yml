@@ -1,0 +1,20 @@
+name: "Export AWS Credentials"
+
+inputs:
+  aws_region:
+    required: false
+    type: string
+    default: "eu-west-1"
+  deployment_ci_role:
+    required: true
+    type: string
+
+runs:
+  using: "composite"
+  steps:
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v2
+      with:
+        aws-region: ${{ inputs.aws_region }}
+        role-to-assume: ${{ inputs.deployment_ci_role }}
+        role-session-name: github-to-aws
