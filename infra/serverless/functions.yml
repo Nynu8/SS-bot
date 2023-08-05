@@ -1,0 +1,3 @@
+functions:
+  team-monitor: ${file(functions/team-monitor/function.yml)}
+  # PLOP_ADD_LAMBDA

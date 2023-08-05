@@ -1,0 +1,31 @@
+service: ${env:APP_NAME, 'ss-monitors'}
+useDotenv: true
+plugins:
+  - serverless-esbuild
+  - serverless-offline
+  - serverless-plugin-log-retention
+  - serverless-iam-roles-per-function
+
+package:
+  individually: true
+
+custom: ${file(./infra/serverless/custom.yml)}
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: ${env:APP_AWS_REGION, 'eu-west-1'}
+  stage: ${opt:stage, 'dev'}
+  memorySize: 1024
+  timeout: 30
+  stackTags: ${file(./infra/serverless/custom.yml):tags}
+  tags: ${file(./infra/serverless/custom.yml):tags}
+  environment: ${file(./infra/serverless/environment.yml):environment}
+  iam: ${file(./infra/serverless/iam.yml):iam}
+  tracing:
+    lambda: true
+    apiGateway: true
+
+functions: ${file(./infra/serverless/functions.yml):functions}
+
+params: ${file(./infra/serverless/params.yml)}

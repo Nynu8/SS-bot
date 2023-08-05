@@ -1,0 +1,14 @@
+name: team-monitor
+handler: functions/team-monitor/handler.handle
+environment:
+  MEMBER_NOTIFICATION_WEBHOOK_URL: ${self:custom.webhooks.memberNotification}
+iamRoleStatementsName: team-monitor-function-role
+iamRoleStatements:
+  - Effect: "Allow"
+    Action:
+      - dynamodb:GetItem
+      - dynamodb:Query
+      - dynamodb:BatchWriteItem
+    Resource: ${ssm:player-data-ddb-arn}
+events:
+  - schedule: rate(15 minutes)

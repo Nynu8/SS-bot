@@ -1,0 +1,7 @@
+logRetentionInDays: 30
+tags:
+  service-name: ss-monitors
+  developed-by: Nynu
+  deployed-with: serverless
+webhooks:
+  memberNotification: ${ssm:team-monitor-webhook-url}

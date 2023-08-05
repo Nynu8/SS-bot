@@ -1,0 +1,3 @@
+default:
+  resourceSuffix: ${self:provider.stage}
+  
