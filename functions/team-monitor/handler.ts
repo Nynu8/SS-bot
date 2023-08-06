@@ -12,6 +12,7 @@ const config = createConfig(process.env);
 
 const playerListRepository = new PlayerListRepository({
   client: createDynamoDbDocumentClient(),
+  logger,
 });
 const notificationService = new NotificationService({
   webhookUrl: config.memberNotificationWebhookUrl,

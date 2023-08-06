@@ -1,7 +1,9 @@
 import { BatchWriteCommand, DynamoDBDocumentClient, GetCommand, QueryCommand } from "@aws-sdk/lib-dynamodb";
+import { Logger } from "../logger";
 
 interface PlayerListRepositoryDependencies {
   client: DynamoDBDocumentClient;
+  logger: Logger;
 }
 
 export class PlayerListRepository {
@@ -10,6 +12,12 @@ export class PlayerListRepository {
   constructor(private dependencies: PlayerListRepositoryDependencies) {}
 
   async savePlayers(newPlayers: string[], removedPlayers: string[], team: string) {
+    this.dependencies.logger.debug("Doing update %o", {
+      team,
+      newPlayers,
+      removedPlayers,
+    });
+
     const requestItems = [
       ...newPlayers.map((player) => ({
         PutRequest: {

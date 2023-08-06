@@ -16,4 +16,5 @@ iamRoleStatements:
       - sqs:SendMessage
     Resource: ${self:custom.updateRoster.queueArn}
 events:
-  - schedule: rate(15 minutes)
+  - schedule: cron(*/15 * * * ? *)
+  - http: GET test
