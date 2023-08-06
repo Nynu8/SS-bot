@@ -1,0 +1,11 @@
+name: srx-roster-update
+handler: functions/srx-roster-update/handler.handle
+environment:
+  ROSTER_GOOGLE_CREDENTIALS: ${self:custom.roster.googleCredentials}
+  ROSTER_SPREADSHEET_ID: ${self:custom.roster.spreadsheetId}
+iamRoleStatementsName: srx-roster-update-function-role
+iamRoleStatements:
+events:
+  - sqs:
+      arn: ${self:custom.updateRoster.queueArn}
+      batchSize: 1

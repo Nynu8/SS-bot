@@ -2,6 +2,7 @@ name: team-monitor
 handler: functions/team-monitor/handler.handle
 environment:
   MEMBER_NOTIFICATION_WEBHOOK_URL: ${self:custom.webhooks.memberNotification}
+  UPDATE_ROSTER_QUEUE_URL: ${self:custom.updateRoster.queueUrl}
 iamRoleStatementsName: team-monitor-function-role
 iamRoleStatements:
   - Effect: "Allow"
@@ -10,5 +11,9 @@ iamRoleStatements:
       - dynamodb:Query
       - dynamodb:BatchWriteItem
     Resource: ${ssm:player-data-ddb-arn}
+  - Effect: "Allow"
+    Action:
+      - sqs:SendMessage
+    Resource: ${self:custom.updateRoster.queueArn}
 events:
   - schedule: rate(15 minutes)

@@ -2,18 +2,21 @@ import middy from "@middy/core";
 import { createConfig } from "./config";
 import { fetchPlayersFromWebsite } from "../../shared/ss-website/fetch-players-from-website";
 import { PlayerListRepository } from "../../shared/player-data/player-list.repository";
-import { createDynamoDbDocumentClient } from "../../shared/aws/factories";
+import { createDynamoDbDocumentClient, createSqsClient } from "../../shared/aws/factories";
 import { logger } from "../../shared/logger";
 import { NotificationService } from "../../shared/discord/notification.service";
 import { errorHandler } from "../../shared/middlewares/error-handler";
+import { SendMessageCommand } from "@aws-sdk/client-sqs";
 
 const config = createConfig(process.env);
+
 const playerListRepository = new PlayerListRepository({
   client: createDynamoDbDocumentClient(),
 });
 const notificationService = new NotificationService({
   webhookUrl: config.memberNotificationWebhookUrl,
 });
+const updateRosterQueue = createSqsClient();
 
 const lambdaHandler = async () => {
   logger.info("Starting team refreshing");
@@ -23,7 +26,8 @@ const lambdaHandler = async () => {
     Object.keys(teams).map(async (teamName) => {
       try {
         logger.info(`Fetching website data for team ${teamName}`);
-        const sitePlayernames = await fetchPlayersFromWebsite(teams[teamName]);
+        const siteData = await fetchPlayersFromWebsite(teams[teamName]);
+        const sitePlayernames = siteData.map((entry) => entry.name);
 
         logger.info(`Fetching DB data for team ${teamName}`);
         const dbPlayernames = await playerListRepository.getPlayersFromTeam(teamName);
@@ -37,6 +41,16 @@ const lambdaHandler = async () => {
 
           logger.info(`Notifying about changes to ${teamName}`);
           await notificationService.notifyTeamMonitor(teamName, joined, left);
+
+          if (teamName === "Star Revolution X") {
+            logger.info("Requesting roster update");
+            await updateRosterQueue.send(
+              new SendMessageCommand({
+                QueueUrl: config.updateRosterQueueUrl,
+                MessageBody: JSON.stringify(siteData),
+              }),
+            );
+          }
         }
       } catch (err) {
         await notificationService.notifyFailedTeamUpdate(teamName);

@@ -5,3 +5,9 @@ tags:
   deployed-with: serverless
 webhooks:
   memberNotification: ${ssm:team-monitor-webhook-url}
+updateRoster:
+  queueUrl: ${ssm:update-roster-queue-url}
+  queueArn: ${ssm:update-roster-queue-arn}
+roster:
+  googleCredentials: ${ssm(raw):roster-google-credentials}
+  spreadsheetId: ${ssm:roster-spreadsheet-id}

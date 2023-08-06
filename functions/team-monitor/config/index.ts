@@ -3,11 +3,13 @@ import { pipeline } from "ts-pipe-compose";
 
 const loadEnvs = (env: any) => ({
   memberNotificationWebhookUrl: env.MEMBER_NOTIFICATION_WEBHOOK_URL,
+  updateRosterQueueUrl: env.UPDATE_ROSTER_QUEUE_URL,
 });
 
 const validateConfig = (config: any) => {
   const schema = z.object({
     memberNotificationWebhookUrl: z.string().url(),
+    updateRosterQueueUrl: z.string().url(),
   });
 
   try {
