@@ -10,6 +10,7 @@ interface RosterClientDependencies {
 }
 
 const rawRosterRange = "Raw Roster!A3:B";
+const unassignedRange = "Unassigned Chars!B2:C";
 
 export class RosterClient {
   api: sheets_v4.Sheets;
@@ -46,5 +47,23 @@ export class RosterClient {
         values: values.map((row) => [row.name, row.rank]),
       },
     });
+  }
+
+  async getUnassignedCharacters(): Promise<PlayerInfo[]> {
+    const { spreadsheetId, logger } = this.dependencies;
+
+    logger.info("Fetching unassigned characters");
+
+    const unassigned = await this.api.spreadsheets.values.get({
+      range: unassignedRange,
+      spreadsheetId,
+    });
+
+    return (
+      unassigned.data.values?.map((item) => ({
+        name: item[0],
+        rank: item[1],
+      })) || []
+    );
   }
 }

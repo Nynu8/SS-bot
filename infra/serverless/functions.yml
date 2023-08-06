@@ -1,4 +1,8 @@
 functions:
   team-monitor: ${file(functions/team-monitor/function.yml)}
   srx-roster-update: ${file(functions/srx-roster-update/function.yml)}
-  # PLOP_ADD_LAMBDA
+  
+
+  # notifications
+  notification-group-content: ${file(functions/notifications/group-content/function.yml)}
+  notification-unassigned: ${file(functions/notifications/unassigned/function.yml)}

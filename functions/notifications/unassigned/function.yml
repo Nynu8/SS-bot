@@ -1,0 +1,10 @@
+name: notification-unassigned
+handler: functions/notifications/unassigned/handler.handle
+environment:
+  ROSTER_MONITORING_WEBHOOK_URL: ${self:custom.webhooks.rosterMonitoring}
+  ROSTER_GOOGLE_CREDENTIALS: ${self:custom.roster.googleCredentials}
+  ROSTER_SPREADSHEET_ID: ${self:custom.roster.spreadsheetId}
+iamRoleStatementsName: notification-unassigned-function-role
+iamRoleStatements:
+events:
+  - schedule: cron(0 0 * * ? *)

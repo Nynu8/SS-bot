@@ -5,6 +5,8 @@ tags:
   deployed-with: serverless
 webhooks:
   memberNotification: ${ssm:team-monitor-webhook-url}
+  rosterMonitoring: ${ssm:discord-monitoring-webhook-url}
+  runs: ${ssm:runs-channel-webhook-url}
 updateRoster:
   queueUrl: ${ssm:update-roster-queue-url}
   queueArn: ${ssm:update-roster-queue-arn}

@@ -1,0 +1,8 @@
+name: notification-group-content
+handler: functions/notifications/group-content/handler.handle
+environment:
+  RUNS_WEBHOOK_URL: ${self:custom.webhooks.runs}
+iamRoleStatementsName: notification-group-content-function-role
+iamRoleStatements:
+events:
+  - schedule: cron(0 0 ? * SUN *)

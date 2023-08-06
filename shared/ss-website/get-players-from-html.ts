@@ -19,5 +19,12 @@ export const getPlayersFromHtml = (website: string): PlayerInfo[] => {
     })
     .get();
 
-  return entries.filter((entry) => entry.name !== undefined && entry.rank !== undefined);
+  return entries.filter(
+    (entry) =>
+      entry.name !== undefined &&
+      entry.name !== "" &&
+      entry.name !== "member" &&
+      entry.rank !== undefined &&
+      entry.rank !== "",
+  );
 };

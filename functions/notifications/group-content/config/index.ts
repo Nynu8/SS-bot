@@ -1,16 +1,13 @@
 import { z } from "zod";
 import { pipeline } from "ts-pipe-compose";
-import { CredentialSchema } from "../../../shared/roster/credentials.schema";
 
 const loadEnvs = (env: any) => ({
-  rosterGoogleCredentials: env.ROSTER_GOOGLE_CREDENTIALS,
-  rosterSpreadsheetId: env.ROSTER_SPREADSHEET_ID,
+  runsWebhookUrl: env.RUNS_WEBHOOK_URL,
 });
 
 const validateConfig = (config: any) => {
   const schema = z.object({
-    rosterGoogleCredentials: CredentialSchema,
-    rosterSpreadsheetId: z.string(),
+    runsWebhookUrl: z.string().url(),
   });
 
   try {

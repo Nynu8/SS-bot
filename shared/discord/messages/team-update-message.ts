@@ -1,4 +1,4 @@
-export const createTeamNotification = (team: string, joined: string[], left: string[]) =>
+export const teamUpdateMessage = (team: string, joined: string[], left: string[]) =>
   [
     `Updates for team **${team}**:`,
     "```diff",

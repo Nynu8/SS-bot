@@ -1,5 +1,8 @@
 import { WebhookClient } from "discord.js";
-import { createTeamNotification } from "./create-team-notification";
+import { teamUpdateMessage } from "./messages/team-update-message";
+import { groupContentMessage } from "./messages/group-content-message";
+import { PlayerInfo } from "../ss-website/types";
+import { unassignedMessage } from "./messages/unassigned-message";
 
 interface NotificationServiceDependencies {
   webhookUrl: string;
@@ -16,13 +19,25 @@ export class NotificationService {
 
   async notifyTeamMonitor(team: string, joined: string[], left: string[]) {
     await this.webhookClient.send({
-      content: createTeamNotification(team, joined, left),
+      content: teamUpdateMessage(team, joined, left),
     });
   }
 
   async notifyFailedTeamUpdate(team: string) {
     await this.webhookClient.send({
       content: `Failed to update list for team **${team}**`,
+    });
+  }
+
+  async notifyGroupContent() {
+    await this.webhookClient.send({
+      content: groupContentMessage(),
+    });
+  }
+
+  async notifyUnassigned(playerInfo: PlayerInfo[]) {
+    await this.webhookClient.send({
+      content: unassignedMessage(playerInfo),
     });
   }
 }
