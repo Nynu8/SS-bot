@@ -17,6 +17,7 @@ provider:
   region: ${env:APP_AWS_REGION, 'eu-west-1'}
   stage: ${opt:stage, 'dev'}
   memorySize: 1024
+  logRetentionInDays: 14
   timeout: 30
   stackTags: ${file(./infra/serverless/custom.yml):tags}
   tags: ${file(./infra/serverless/custom.yml):tags}
