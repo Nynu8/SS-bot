@@ -1,6 +1,6 @@
 logRetentionInDays: 30
 tags:
-  service-name: ss-monitors
+  service-name: ss-bot
   developed-by: Nynu
   deployed-with: serverless
 webhooks:

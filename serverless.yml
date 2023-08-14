@@ -1,4 +1,4 @@
-service: ${env:APP_NAME, 'ss-monitors'}
+service: ${env:APP_NAME, 'ss-bot'}
 useDotenv: true
 plugins:
   - serverless-esbuild
