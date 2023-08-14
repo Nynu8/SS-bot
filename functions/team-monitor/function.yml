@@ -17,4 +17,3 @@ iamRoleStatements:
     Resource: ${self:custom.updateRoster.queueArn}
 events:
   - schedule: cron(*/15 * * * ? *)
-  - http: GET test
