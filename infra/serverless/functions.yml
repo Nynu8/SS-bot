@@ -1,8 +1,11 @@
 functions:
-  team-monitor: ${file(functions/team-monitor/function.yml)}
-  srx-roster-update: ${file(functions/srx-roster-update/function.yml)}
+  interactions: ${file(functions/interactions/function.yml)}
+  register-interactions: ${file(functions/register-interactions/function.yml)}
   
-
   # notifications
   notification-group-content: ${file(functions/notifications/group-content/function.yml)}
   notification-unassigned: ${file(functions/notifications/unassigned/function.yml)}
+
+  # monitors
+  team-monitor: ${file(functions/team-monitor/function.yml)}
+  srx-roster-update: ${file(functions/srx-roster-update/function.yml)}

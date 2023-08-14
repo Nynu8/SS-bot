@@ -1,0 +1,9 @@
+name: register-interactions
+handler: functions/register-interactions/handler.handle
+environment:
+  DISCORD_CLIENT_ID: ${self:custom.discord.clientId}
+  SRX_GUILD_ID: ${self:custom.discord.srxGuildId}
+  BOT_TOKEN: ${self:custom.discord.token}
+iamRoleStatementsName: register-interactions-function-role
+iamRoleStatements:
+events:

@@ -13,3 +13,8 @@ updateRoster:
 roster:
   googleCredentials: ${ssm(raw):roster-google-credentials}
   spreadsheetId: ${ssm:roster-spreadsheet-id}
+discord:
+  srxGuildId: "206241210103234560"
+  clientId: ${ssm:discord-client-id}
+  token: ${ssm:discord-bot-token}
+  publicKey: ${ssm:discord-public-key}

@@ -1,0 +1,11 @@
+name: interactions
+handler: functions/interactions/handler.handle
+environment:
+  DISCORD_PUBLIC_KEY: ${self:custom.discord.publicKey}
+iamRoleStatementsName: interactions-function-role
+iamRoleStatements:
+events:
+  - http:
+      path: /interactions
+      method: POST
+      cors: true
