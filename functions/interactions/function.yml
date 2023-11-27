@@ -2,6 +2,7 @@ name: interactions
 handler: functions/interactions/handler.handle
 environment:
   DISCORD_PUBLIC_KEY: ${self:custom.discord.publicKey}
+  BOT_TOKEN: ${self:custom.discord.token}
 iamRoleStatementsName: interactions-function-role
 iamRoleStatements:
 events:

@@ -6,9 +6,13 @@ import { logger } from "../../shared/logger";
 import { errorHandler } from "../../shared/middlewares/error-handler";
 import { APIGatewayEvent } from "aws-lambda";
 import { awsLambdaResponse } from "../../shared/aws/response";
-import { InteractionResponseType } from "discord.js";
+import { APIInteraction, InteractionResponseType, InteractionType } from "discord.js";
+import { CommandService } from "../../shared/discord/command.service";
+import { createDiscordApi } from "../../shared/discord/api";
 
 const config = createConfig(process.env);
+const discordServices = createDiscordApi({ authToken: config.token });
+const commandService = new CommandService({ discordServices });
 
 const lambdaHandler = async ({ body, headers }: APIGatewayEvent) => {
   logger.info(body);
@@ -26,11 +30,24 @@ const lambdaHandler = async ({ body, headers }: APIGatewayEvent) => {
     return awsLambdaResponse(StatusCodes.BAD_REQUEST);
   }
 
-  const request = JSON.parse(body);
-  if (request.type === 1) {
-    return awsLambdaResponse(StatusCodes.OK, {
-      type: InteractionResponseType.Pong,
-    });
+  const interaction: APIInteraction = JSON.parse(body);
+  switch (interaction.type) {
+    case InteractionType.Ping:
+      return awsLambdaResponse(StatusCodes.OK, {
+        type: InteractionResponseType.Pong,
+      });
+
+    case InteractionType.ApplicationCommand:
+      {
+        await discordServices.interactionService.defer(interaction.id, interaction.token);
+
+        const res = await commandService.execute(interaction);
+        await discordServices.interactionService.updateResponse(interaction.application_id, interaction.token, res);
+      }
+      break;
+
+    default:
+      logger.info(`Unhandled interaction type ${interaction.type}`);
   }
 
   return awsLambdaResponse(StatusCodes.OK);
