@@ -1,7 +1,5 @@
 import { Handler } from "../../event.type";
 
-export const scanHandler = (): Handler => async (event) => {
-  console.log(event.data);
-
+export const scanHandler = (): Handler => async (_event) => {
   return { content: "ok" };
 };

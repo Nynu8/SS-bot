@@ -10,7 +10,9 @@ import { pingmeCommand, pingmeHandler } from "./commands/pingme";
 import { savingsCommand, savingsHandler } from "./commands/savings";
 import { manhoursCommand, manhoursHandler } from "./commands/manhours";
 import { extractionCommand, extractionHandler } from "./commands/extraction";
-import { scanCommand, scanHandler } from "./commands/scan";
+// import { scanCommand, scanHandler } from "./commands/scan";
+import { ubersCommand, ubersHandler } from "./commands/ubers";
+import { AppError } from "../errors/app.error";
 
 interface CommandServiceDependencies {
   discordServices: DiscordServices;
@@ -41,10 +43,15 @@ export class CommandService {
         command: extractionCommand,
         handle: extractionHandler(),
       },
+      // {
+      //   name: scanCommand.name,
+      //   command: scanCommand,
+      //   handle: scanHandler(),
+      // },
       {
-        name: scanCommand.name,
-        command: scanCommand,
-        handle: scanHandler(),
+        name: ubersCommand.name,
+        command: ubersCommand,
+        handle: ubersHandler(),
       },
     ];
   }
@@ -60,6 +67,14 @@ export class CommandService {
       throw new MissingCommandError();
     }
 
-    return command.handle(interaction);
+    try {
+      return command.handle(interaction);
+    } catch (err) {
+      if (err instanceof AppError) {
+        return { content: err.message };
+      }
+
+      return { content: "Unknown error" };
+    }
   }
 }

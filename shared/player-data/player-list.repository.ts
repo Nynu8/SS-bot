@@ -12,12 +12,6 @@ export class PlayerListRepository {
   constructor(private dependencies: PlayerListRepositoryDependencies) {}
 
   async savePlayers(newPlayers: string[], removedPlayers: string[], team: string) {
-    this.dependencies.logger.debug("Doing update %o", {
-      team,
-      newPlayers,
-      removedPlayers,
-    });
-
     const requestItems = [
       ...newPlayers.map((player) => ({
         PutRequest: {

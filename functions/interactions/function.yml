@@ -5,6 +5,12 @@ environment:
   BOT_TOKEN: ${self:custom.discord.token}
 iamRoleStatementsName: interactions-function-role
 iamRoleStatements:
+  - Effect: "Allow"
+    Action:
+      - dynamodb:Query
+      - dynamodb:PutItem
+      - dynamodb:UpdateItem
+    Resource: ${ssm:player-data-ddb-arn}
 events:
   - http:
       path: /interactions

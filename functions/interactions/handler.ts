@@ -15,9 +15,6 @@ const discordServices = createDiscordApi({ authToken: config.token });
 const commandService = new CommandService({ discordServices });
 
 const lambdaHandler = async ({ body, headers }: APIGatewayEvent) => {
-  logger.info(body);
-  logger.info(headers);
-
   const signature = headers["x-signature-ed25519"];
   const timestamp = headers["x-signature-timestamp"];
 
